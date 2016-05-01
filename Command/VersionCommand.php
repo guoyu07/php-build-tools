@@ -85,6 +85,7 @@ class VersionCommand extends Command
 
         if ($input->getOption('dry-run')) {
             $output->writeln('Changes not written to file.');
+            return;
         }
 
         /**

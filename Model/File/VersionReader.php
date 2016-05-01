@@ -56,7 +56,7 @@ class VersionReader
             throw new \RuntimeException(sprintf('Invalid version string, expected VERSION=major.minor.patch'));
         }
 
-        $string = "VERSION=" . $version;
+        $string = $version;
 
         return file_put_contents($this->filepath, $string);
     }

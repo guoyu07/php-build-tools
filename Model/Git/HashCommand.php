@@ -36,8 +36,7 @@ class HashCommand
      */
     public function getHash()
     {
-        $result = $this->command->run();
-        $out = $result->getStdOut();
+        $out = $this->runCommand();
 
         if (empty($out)) {
             return null;
@@ -62,5 +61,16 @@ class HashCommand
             ->addArgument(new Argument('rev-parse'))
             ->addArgument(new Argument('HEAD'));
         return $command;
+    }
+
+    /**
+     * Run configured command
+     *
+     * @return string
+     */
+    protected function runCommand()
+    {
+        $result = $this->command->run();
+        return $result->getStdOut();
     }
 }

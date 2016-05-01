@@ -45,8 +45,7 @@ class TagsCommand
      */
     public function getTags()
     {
-        $result = $this->command->run();
-        $out = $result->getStdOut();
+        $out = $this->runCommand();
         $raw = explode(PHP_EOL, $out);
 
         $tags = array();
@@ -79,5 +78,16 @@ class TagsCommand
             ->addArgument(new Argument('show-ref'))
             ->addArgument(new Argument('--tags'));
         return $command;
+    }
+
+    /**
+     * Run git tags command
+     *
+     * @return string
+     */
+    protected function runCommand()
+    {
+        $result = $this->command->run();
+        return $result->getStdOut();
     }
 }
