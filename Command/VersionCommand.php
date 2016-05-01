@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tremend\BuildTools\Model\File\VersionReader;
 use Tremend\BuildTools\Model\Git\HashCommand;
+use Tremend\BuildTools\Model\Git\HashTagCommand;
 use Tremend\BuildTools\Model\Git\TagsCommand;
 use Tremend\BuildTools\Model\Version;
 
@@ -48,29 +49,41 @@ class VersionCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $tags = $this->getTags($input);
         $hash = $this->getHash($input);
         $version = $this->getVersion($input);
 
-        $output->writeln(sprintf('Current version is %s', $version));
-
+        /**
+         * No hash found
+         */
         if (null === $hash) {
             throw new RuntimeException('Could not determine a valid hash for git repository path.');
         }
 
         /**
-         * No tags available
+         * No version detected
          */
-        if (empty($tags)) {
-            $output->writeln('No tags has been created so far. Version will not be incremented.');
+        if (empty($version)) {
+            $output->writeln(sprintf('Could not determine any version stored in %s.', $input->getOption('version-filename')));
+            return;
+        }
+
+        $output->writeln(sprintf('Current version is %s', $version));
+
+        $hashByVersion = $this->getHashTag($input, $version);
+
+        if ($hashByVersion) {
+            $output->writeln(sprintf('Current version is pointing to %s', $hashByVersion));
+        }
+        else {
+            $output->writeln(sprintf('Current version not pointing to any hash. This is the first version, the script does nothing.'));
             return;
         }
 
         /**
-         * Hash has a tag associated with it
+         * If hashes are the same, exit
          */
-        if (isset($tags[$hash])) {
-            $output->writeln(sprintf('Current hash %s has already a tag %s associated with it. Version will not be incremented.', $hash, $tags[$hash]->getTag()));
+        if ($hash === $hashByVersion) {
+            $output->writeln('No changes committed since last version. The script does nothing.');
             return;
         }
 
@@ -117,6 +130,21 @@ class VersionCommand extends Command
     protected function getHash(InputInterface $input)
     {
         $hashCommand = new HashCommand($input->getArgument('git-path'));
+        $hash = $hashCommand->getHash();
+
+        return $hash;
+    }
+
+    /**
+     * Return hash pointed by version
+     *
+     * @param InputInterface $input
+     * @param $tag
+     * @return mixed
+     */
+    protected function getHashTag(InputInterface $input, $tag)
+    {
+        $hashCommand = new HashTagCommand($input->getArgument('git-path'), $tag);
         $hash = $hashCommand->getHash();
 
         return $hash;

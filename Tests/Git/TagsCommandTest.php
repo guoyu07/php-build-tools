@@ -20,14 +20,12 @@ class TagsCommandTest extends \PHPUnit_Framework_TestCase
     {
         $return = <<<HEREDOC
 ff17437abd60734c25088a77a5655e555c0c3074 refs/tags/0.1.0
-ff17437abd60734c25088a77a5655e555c0c3075 refs/tags/0.1.1
 HEREDOC;
 
         $command = $this->getMockCommand($return);
 
         $expects = array(
-            'ff17437abd60734c25088a77a5655e555c0c3074' => new Tag('0.1.0', 'ff17437abd60734c25088a77a5655e555c0c3074'),
-            'ff17437abd60734c25088a77a5655e555c0c3075' => new Tag('0.1.1', 'ff17437abd60734c25088a77a5655e555c0c3075')
+            'ff17437abd60734c25088a77a5655e555c0c3074' => new Tag('0.1.0', 'ff17437abd60734c25088a77a5655e555c0c3074')
         );
 
         $this->assertEquals($expects, $command->getTags());

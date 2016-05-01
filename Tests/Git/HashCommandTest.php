@@ -2,8 +2,6 @@
 
 namespace Tremend\BuildTools\Tests\Git;
 
-use Tremend\BuildTools\Model\Git\HashCommand;
-
 class HashCommandTest extends \PHPUnit_Framework_TestCase
 {
     /**
