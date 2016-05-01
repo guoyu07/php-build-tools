@@ -27,11 +27,11 @@ class VersionReaderTest extends \PHPUnit_Framework_TestCase
         vfsStreamWrapper::register();
         $root = vfsStreamWrapper::setRoot(new vfsStreamDirectory('root'));
         $this->validFile = vfsStream::newFile('VERSION')
-            ->withContent('1.2.0')
+            ->withContent('VERSION=1.2.0')
             ->at($root);
 
         $this->invalidFile = vfsStream::newFile('VERSION_WRONG')
-            ->withContent('wrong.content')
+            ->withContent('VERSION=wrong.content')
             ->at($root);
     }
 
@@ -42,7 +42,7 @@ class VersionReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('1.2.0', $reader->getVersion());
 
         $reader->setVersion('2.3.4');
-        $this->assertEquals('2.3.4', $this->validFile->getContent());
+        $this->assertEquals('VERSION=2.3.4', $this->validFile->getContent());
     }
 
     public function testCouldNotReadFile()
