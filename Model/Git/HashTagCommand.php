@@ -39,7 +39,7 @@ class HashTagCommand extends AbstractCommand
     {
         $out = $this->runCommand();
 
-        if (empty($out) || strpos($out, 'fatal') !== false) {
+        if (empty($out)) {
             return null;
         }
 
@@ -63,5 +63,33 @@ class HashTagCommand extends AbstractCommand
             ->addArgument(new Argument('-1'))
             ->addArgument(new Argument($this->tag));
         return $command;
+    }
+
+    /**
+     * Run configured command
+     *
+     * @return string
+     */
+    protected function runCommand()
+    {
+        $result = $this->command->run();
+
+        if ($result->getExitCode() != 0) {
+            $error = $result->getStdErr();
+
+            /**
+             * Tag not found in the working tree
+             */
+            if (strpos($error, 'fatal') !== false) {
+                return '';
+            }
+
+            throw new \RuntimeException(sprintf(
+                'Command failed. Exit code %d, output %s',
+                $result->getExitCode(),
+                $result->getStdOut()));
+        }
+
+        return $result->getStdOut();
     }
 }
