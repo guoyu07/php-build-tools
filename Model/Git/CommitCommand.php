@@ -103,7 +103,7 @@ class CommitCommand extends AbstractCommand
         }
 
         if (null !== $this->pathFile) {
-            $command->addArgument(new Argument($this->pathFile));
+            $command->addArgument(new Argument('--include', $this->pathFile));
         }
 
         return $command;
