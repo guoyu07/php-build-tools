@@ -12,15 +12,24 @@ class HashCommand extends AbstractCommand
      *
      * @var null
      */
+    private $repoDir = null;
+
+    /**
+     * Git executable dir
+     *
+     * @var null
+     */
     private $gitDir = null;
 
     /**
      * Tags constructor.
      * @param $gitDir
      */
-    public function __construct($gitDir)
+    public function __construct($repoDir, $gitDir)
     {
+        $this->repoDir = $repoDir;
         $this->gitDir = $gitDir;
+
         $this->command = $this->buildCommand();
     }
 
@@ -49,8 +58,8 @@ class HashCommand extends AbstractCommand
     {
         $command = new Command(\Tivie\Command\DONT_ADD_SPACE_BEFORE_VALUE);
         $command
-            ->chdir(realpath($this->gitDir))
-            ->setCommand('git')
+            ->chdir(realpath($this->repoDir))
+            ->setCommand($this->gitDir)
             ->addArgument(new Argument('rev-parse'))
             ->addArgument(new Argument('HEAD'));
 

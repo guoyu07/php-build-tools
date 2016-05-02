@@ -12,6 +12,13 @@ class TagCommand extends AbstractCommand
      *
      * @var null
      */
+    private $repoDir = null;
+
+    /**
+     * Git executable dir
+     *
+     * @var null
+     */
     private $gitDir = null;
 
     /**
@@ -24,11 +31,13 @@ class TagCommand extends AbstractCommand
     /**
      * Tag constructor.
      *
+     * @param $repoDir
      * @param $gitDir
      * @param $tag
      */
-    public function __construct($gitDir, $tag)
+    public function __construct($repoDir, $gitDir, $tag)
     {
+        $this->repoDir = $repoDir;
         $this->gitDir = $gitDir;
         $this->tag = $tag;
         $this->command = $this->buildCommand();
@@ -57,12 +66,12 @@ class TagCommand extends AbstractCommand
      */
     protected function buildCommand()
     {
-        $command = new Command(\Tivie\Command\DONT_ADD_SPACE_BEFORE_VALUE);
+        $command = new Command(\Tivie\Command\ESCAPE);
         $command
-            ->chdir(realpath($this->gitDir))
-            ->setCommand('git')
+            ->chdir(realpath($this->repoDir))
+            ->setCommand($this->gitDir)
             ->addArgument(new Argument('tag'))
-            ->addArgument(new Argument($this->tag));
+            ->addArgument(new Argument($this->tag, null, null, true));
 
         return $command;
     }

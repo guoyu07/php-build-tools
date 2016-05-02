@@ -13,11 +13,7 @@ class HashTagCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('somerandomhash', $command->getHash());
 
-        $fatal = <<<HEREDOC
-fatal: ambiguous argument '0.1.0': unknown revision or path not in the working tree.
-Use '--' to separate paths from revisions, like this:
-'git <command> [<revision>...] -- [<file>...]'
-HEREDOC;
+        $fatal = '';
 
         $command = $this->getMockCommand($fatal);
 

@@ -24,9 +24,16 @@ class VersionCommand extends Command
             ->setName('version:increment')
             ->setDescription('Increment the PATCH part of a version string MAJOR.MINOR.PATCH and write the result to file.')
             ->addArgument(
-                'git-path',
+                'repository-path',
                 InputArgument::REQUIRED,
                 'Full path to git repository'
+            )
+            ->addOption(
+                'git-path',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Git client executable',
+                '/usr/bin/git'
             )
             ->addOption(
                 'version-filename',
@@ -157,7 +164,9 @@ class VersionCommand extends Command
      */
     protected function getHash(InputInterface $input)
     {
-        $hashCommand = new HashCommand($input->getArgument('git-path'));
+        $hashCommand = new HashCommand(
+            $input->getArgument('repository-path'),
+            $input->getOption('git-path'));
         $hash = $hashCommand->getHash();
 
         return $hash;
@@ -172,7 +181,10 @@ class VersionCommand extends Command
      */
     protected function getHashTag(InputInterface $input, $tag)
     {
-        $hashCommand = new HashTagCommand($input->getArgument('git-path'), $tag);
+        $hashCommand = new HashTagCommand(
+            $input->getArgument('repository-path'),
+            $input->getOption('git-path'),
+            $tag);
         $hash = $hashCommand->getHash();
 
         return $hash;
@@ -211,7 +223,10 @@ class VersionCommand extends Command
      */
     protected function tag(InputInterface $input, $version)
     {
-        $tagCommand = new TagCommand($input->getArgument('git-path'), $version);
+        $tagCommand = new TagCommand(
+            $input->getArgument('repository-path'),
+            $input->getOption('git-path'),
+            $version);
         $tagCommand->tag();
     }
 
@@ -225,7 +240,8 @@ class VersionCommand extends Command
         $message = sprintf($input->getOption('commit-message'), $version);
 
         $commitCommand = new CommitCommand(
-            $input->getArgument('git-path'),
+            $input->getArgument('repository-path'),
+            $input->getOption('git-path'),
             $message,
             $input->getOption('version-filename'),
             $input->getOption('author-name'),

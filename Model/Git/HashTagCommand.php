@@ -8,7 +8,14 @@ use Tivie\Command\Command;
 class HashTagCommand extends AbstractCommand
 {
     /**
-     * Full path to git repository
+     * Path to git repository
+     *
+     * @var null
+     */
+    private $repoDir = null;
+
+    /**
+     * Git executable dir
      *
      * @var null
      */
@@ -25,10 +32,12 @@ class HashTagCommand extends AbstractCommand
      * Tags constructor.
      * @param $gitDir
      */
-    public function __construct($gitDir, $tag)
+    public function __construct($repoDir, $gitDir, $tag)
     {
+        $this->repoDir = $repoDir;
         $this->gitDir = $gitDir;
         $this->tag = $tag;
+
         $this->command = $this->buildCommand();
     }
 
@@ -57,8 +66,8 @@ class HashTagCommand extends AbstractCommand
     {
         $command = new Command(\Tivie\Command\DONT_ADD_SPACE_BEFORE_VALUE);
         $command
-            ->chdir(realpath($this->gitDir))
-            ->setCommand('git')
+            ->chdir(realpath($this->repoDir))
+            ->setCommand($this->gitDir)
             ->addArgument(new Argument('rev-list'))
             ->addArgument(new Argument('-1'))
             ->addArgument(new Argument($this->tag));
