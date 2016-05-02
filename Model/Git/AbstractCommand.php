@@ -26,7 +26,7 @@ class AbstractCommand
             throw new \RuntimeException(sprintf(
                 'Command failed. Exit code %d, output %s',
                 $result->getExitCode(),
-                $result->getStdOut()));
+                $result->getStdErr()));
         }
 
         return $result->getStdOut();

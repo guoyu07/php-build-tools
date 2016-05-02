@@ -89,21 +89,23 @@ class CommitCommand extends AbstractCommand
      */
     protected function buildCommand()
     {
-        $command = new Command(\Tivie\Command\DONT_ADD_SPACE_BEFORE_VALUE);
+        $command = new Command(\Tivie\Command\ESCAPE & \Tivie\Command\DONT_ADD_SPACE_BEFORE_VALUE);
         $command
             ->chdir(realpath($this->gitDir))
             ->setCommand('git')
-            ->addArgument(new Argument('commit'))
-            ->addArgument(new Argument('-m'))
-            ->addArgument(new Argument($this->message));
+            ->addArgument(new Argument('commit', null, null, false))
+            ->addArgument(new Argument('--message=', null, null, true))
+            ->addArgument(new Argument($this->message, null, null, true));
 
         if (null != $this->author) {
             $command
-                ->addArgument(new Argument('--author', $this->author));
+                ->addArgument(new Argument("--author=", null, null, false));
         }
 
         if (null !== $this->pathFile) {
-            $command->addArgument(new Argument('--include', $this->pathFile));
+            $command
+                ->addArgument(new Argument('--include='))
+                ->addArgument(new Argument($this->pathFile, null, null, true));
         }
 
         return $command;
