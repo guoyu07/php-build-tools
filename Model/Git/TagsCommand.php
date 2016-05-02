@@ -12,7 +12,7 @@ use Tivie\Command\Command;
  *
  * @package Tremend\BuildTools\Model
  */
-class TagsCommand
+class TagsCommand extends AbstractCommand
 {
     /**
      * Full path to git repository
@@ -20,13 +20,6 @@ class TagsCommand
      * @var null
      */
     private $gitDir = null;
-
-    /**
-     * Command to run in order to return git tags
-     *
-     * @var null|Command
-     */
-    private $command = null;
 
     /**
      * Tags constructor.
@@ -78,16 +71,5 @@ class TagsCommand
             ->addArgument(new Argument('show-ref'))
             ->addArgument(new Argument('--tags'));
         return $command;
-    }
-
-    /**
-     * Run git tags command
-     *
-     * @return string
-     */
-    protected function runCommand()
-    {
-        $result = $this->command->run();
-        return $result->getStdOut();
     }
 }

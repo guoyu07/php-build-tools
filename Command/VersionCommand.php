@@ -9,8 +9,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Tremend\BuildTools\Model\File\VersionReader;
+use Tremend\BuildTools\Model\Git\CommitCommand;
 use Tremend\BuildTools\Model\Git\HashCommand;
 use Tremend\BuildTools\Model\Git\HashTagCommand;
+use Tremend\BuildTools\Model\Git\TagCommand;
 use Tremend\BuildTools\Model\Git\TagsCommand;
 use Tremend\BuildTools\Model\Version;
 
@@ -32,6 +34,25 @@ class VersionCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'File where the version string should be stored.',
                 'VERSION'
+            )
+            ->addOption(
+                'commit-message',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Commit message.',
+                'Bumped version to %s'
+            )
+            ->addOption(
+                'author-name',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Commit as author name.'
+            )
+            ->addOption(
+                'author-email',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Commit as author email.'
             )
             ->addOption(
                 'dry-run',
@@ -75,7 +96,10 @@ class VersionCommand extends Command
             $output->writeln(sprintf('Current version is pointing to %s', $hashByVersion));
         }
         else {
-            $output->writeln(sprintf('Current version not pointing to any hash. This is the first version, the script does nothing.'));
+            $output->writeln(sprintf('Current version not pointing to any hash. This is the first version.'));
+
+            if (!$input->getOption('dry-run')) $this->tag($input, $version);
+
             return;
         }
 
@@ -105,6 +129,10 @@ class VersionCommand extends Command
          * Write changes to file
          */
         $this->setVersion($input, $version);
+
+        $this->commit($input, $version);
+
+        $this->tag($input, $version);
     }
 
     /**
@@ -173,5 +201,35 @@ class VersionCommand extends Command
         $versionReader = new VersionReader($input->getOption('version-filename'));
 
         $versionReader->setVersion($version);
+    }
+
+    /**
+     * Tag hash with current version
+     *
+     * @param InputInterface $input
+     * @param $version
+     */
+    protected function tag(InputInterface $input, $version)
+    {
+        $tagCommand = new TagCommand($input->getArgument('git-path'), $version);
+        $tagCommand->tag();
+    }
+
+    /**
+     * Commit version file
+     *
+     * @param InputInterface $input
+     */
+    protected function commit(InputInterface $input, $version)
+    {
+        $message = sprintf($input->getOption('commit-message'), $version);
+
+        $commitCommand = new CommitCommand(
+            $input->getArgument('git-path'),
+            $message,
+            $input->getOption('version-filename'),
+            $input->getOption('author-name'),
+            $input->getOption('author-email'));
+        $commitCommand->commit();
     }
 }

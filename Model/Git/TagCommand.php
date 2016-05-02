@@ -5,7 +5,7 @@ namespace Tremend\BuildTools\Model\Git;
 use Tivie\Command\Argument;
 use Tivie\Command\Command;
 
-class HashCommand extends AbstractCommand
+class TagCommand extends AbstractCommand
 {
     /**
      * Full path to git repository
@@ -15,19 +15,29 @@ class HashCommand extends AbstractCommand
     private $gitDir = null;
 
     /**
-     * Tags constructor.
-     * @param $gitDir
+     * Tag to tag current hash
+     *
+     * @var null
      */
-    public function __construct($gitDir)
+    private $tag = null;
+
+    /**
+     * Tag constructor.
+     *
+     * @param $gitDir
+     * @param $tag
+     */
+    public function __construct($gitDir, $tag)
     {
         $this->gitDir = $gitDir;
+        $this->tag = $tag;
         $this->command = $this->buildCommand();
     }
 
     /**
      * @return mixed
      */
-    public function getHash()
+    public function tag()
     {
         $out = $this->runCommand();
 
@@ -51,8 +61,8 @@ class HashCommand extends AbstractCommand
         $command
             ->chdir(realpath($this->gitDir))
             ->setCommand('git')
-            ->addArgument(new Argument('rev-parse'))
-            ->addArgument(new Argument('HEAD'));
+            ->addArgument(new Argument('tag'))
+            ->addArgument(new Argument($this->tag));
 
         return $command;
     }

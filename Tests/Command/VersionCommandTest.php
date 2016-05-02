@@ -16,7 +16,9 @@ class VersionCommandTest extends \PHPUnit_Framework_TestCase
                 'getHashTag',
                 'getHash',
                 'getVersion',
-                'setVersion'
+                'setVersion',
+                'commit',
+                'tag'
             ))
             ->getMock();
 
@@ -43,6 +45,14 @@ class VersionCommandTest extends \PHPUnit_Framework_TestCase
 
         $command->expects($this->once())
             ->method('setVersion')
+            ->with($input, '1.0.3');
+
+        $command->expects($this->once())
+            ->method('commit')
+            ->with($input, '1.0.3');
+
+        $command->expects($this->once())
+            ->method('tag')
             ->with($input, '1.0.3');
 
         $output = $this->getMockBuilder('Symfony\Component\Console\Output\ConsoleOutput')
@@ -117,7 +127,8 @@ class VersionCommandTest extends \PHPUnit_Framework_TestCase
                 'getHashTag',
                 'getHash',
                 'getVersion',
-                'setVersion'
+                'setVersion',
+                'tag'
             ))
             ->getMock();
 
@@ -142,6 +153,10 @@ class VersionCommandTest extends \PHPUnit_Framework_TestCase
             ))
             ->getMock();
 
+        $command->expects($this->once())
+            ->method('tag')
+            ->with($input, '0.1.0');
+
         $output = $this->getMockBuilder('Symfony\Component\Console\Output\ConsoleOutput')
             ->disableOriginalConstructor()
             ->setMethods(array(
@@ -153,7 +168,7 @@ class VersionCommandTest extends \PHPUnit_Framework_TestCase
             ->method('writeln')
             ->withConsecutive(
                 array('Current version is 0.1.0'),
-                array('Current version not pointing to any hash. This is the first version, the script does nothing.')
+                array('Current version not pointing to any hash. This is the first version.')
             );
 
         $execute->invokeArgs($command, array($input, $output));

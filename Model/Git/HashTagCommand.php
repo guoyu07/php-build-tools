@@ -5,7 +5,7 @@ namespace Tremend\BuildTools\Model\Git;
 use Tivie\Command\Argument;
 use Tivie\Command\Command;
 
-class HashTagCommand
+class HashTagCommand extends AbstractCommand
 {
     /**
      * Full path to git repository
@@ -13,13 +13,6 @@ class HashTagCommand
      * @var null
      */
     private $gitDir = null;
-
-    /**
-     * Command to run in order to return git tags
-     *
-     * @var null|Command
-     */
-    private $command = null;
 
     /**
      * Tag to return hash pointing to
@@ -70,16 +63,5 @@ class HashTagCommand
             ->addArgument(new Argument('-1'))
             ->addArgument(new Argument($this->tag));
         return $command;
-    }
-
-    /**
-     * Run configured command
-     *
-     * @return string
-     */
-    protected function runCommand()
-    {
-        $result = $this->command->run();
-        return $result->getStdOut();
     }
 }
