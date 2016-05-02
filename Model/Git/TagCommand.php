@@ -70,7 +70,7 @@ class TagCommand extends AbstractCommand
         $command
             ->chdir(realpath($this->repoDir))
             ->setCommand($this->gitDir)
-            ->addArgument(new Argument('tag'))
+            ->addArgument(new Argument('tag', null, null, false))
             ->addArgument(new Argument($this->tag, null, null, true));
 
         return $command;
