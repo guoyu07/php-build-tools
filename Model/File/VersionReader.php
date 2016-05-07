@@ -37,7 +37,7 @@ class VersionReader
 
         $content = file_get_contents($this->filepath);
 
-        if (!preg_match("/(VERSION=|)(\\d+\\.\\d+\\.\\d)/i", $content, $matches)) {
+        if (!preg_match("/(VERSION=|)(\\d+\\.\\d+\\.\\d+)/i", $content, $matches)) {
             throw new \RuntimeException(sprintf('Invalid version string, expected VERSION=major.minor.patch'));
         }
 
@@ -52,7 +52,7 @@ class VersionReader
      */
     public function setVersion($version)
     {
-        if (!preg_match("/\\d+\\.\\d+\\.\\d/i", $version)) {
+        if (!preg_match("/\\d+\\.\\d+\\.\\d+/i", $version)) {
             throw new \RuntimeException(sprintf('Invalid version string, expected VERSION=major.minor.patch'));
         }
 
