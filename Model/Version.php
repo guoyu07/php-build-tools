@@ -61,7 +61,7 @@ class Version
     {
         $parts = explode('.', $version);
 
-        if (!preg_match("/\\d+\\.\\d+\\.\\d/i", $version) || count($parts) !== 3) {
+        if (!preg_match("/\\d+\\.\\d+\\.\\d+/i", $version) || count($parts) !== 3) {
             throw new \RuntimeException(sprintf('Could not parse version string %s as major.minor.patch', $version));
         }
 
