@@ -37,3 +37,7 @@ php command.php version:increment . --dry-run=true
 ```bash
 php command.php version:increment [path_to_git_repository] --version-filename=VERSION 
 ```
+
+TODO:
+
+Check if incremented version has a tag associated with it.
