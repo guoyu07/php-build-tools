@@ -42,5 +42,6 @@ TODO:
 
 Check if incremented version has a tag associated with it.
 
-![Tremend Software Consulting](http://blog.tremend.com/wp-content/uploads/2017/01/LOGO_tremend_cmyk3-300x225.jpg)
 [Tremend Software Consulting](https://www.tremend.com/)
+
+![Tremend Software Consulting](http://blog.tremend.com/wp-content/uploads/2017/01/LOGO_tremend_cmyk3-300x225.jpg)
