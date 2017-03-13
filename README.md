@@ -35,9 +35,12 @@ php command.php version:increment . --dry-run=true
 ```
 
 ```bash
-php command.php version:increment [path_to_git_repository] --version-filename=VERSION 
+php command.php version:increment [path_to_git_repository] --version-filename=VERSION
 ```
 
 TODO:
 
 Check if incremented version has a tag associated with it.
+
+[logo]: http://blog.tremend.com/wp-content/uploads/2017/01/LOGO_tremend_cmyk3-300x225.jpg "Tremend Software Consulting"
+[Tremend Software Consulting](https://www.tremend.com/)
