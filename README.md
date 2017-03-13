@@ -1,5 +1,9 @@
 # Build Tools
 
+[![Build Status](https://scrutinizer-ci.com/g/petrica/php-build-tools/badges/build.png?b=master)](https://scrutinizer-ci.com/g/petrica/php-build-tools/build-status/master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/petrica/php-build-tools/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/petrica/php-build-tools/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/petrica/php-build-tools/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/petrica/php-build-tools/?branch=master)
+
 Build tools that should assist in building and integration code.
 
 ## Version Increment
