@@ -46,7 +46,7 @@ class Version
      *
      * @param int $step
      */
-    public function incrementPath($step = 1)
+    public function incrementPatch($step = 1)
     {
         $this->patch += $step;
     }

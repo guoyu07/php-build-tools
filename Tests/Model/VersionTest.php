@@ -12,10 +12,10 @@ class VersionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('1.0.2', $version->getVersion());
 
-        $version->incrementPath(1);
+        $version->incrementPatch(1);
         $this->assertEquals('1.0.3', $version->getVersion());
 
-        $version->incrementPath(2);
+        $version->incrementPatch(2);
         $this->assertEquals('1.0.5', $version->getVersion());
 
         $this->setExpectedException(

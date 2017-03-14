@@ -122,7 +122,7 @@ class VersionCommand extends Command
          * Increment version
          */
         $model = new Version($version);
-        $model->incrementPath();
+        $model->incrementPatch();
 
         $version = $model->getVersion();
         $output->writeln(sprintf('Version has been incremented to %s', $version));
